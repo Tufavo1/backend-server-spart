@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+    <title>SpartSagan - Carrito de Compras</title>
+{% endblock %}
+
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
+{% endblock estilos %}
+
+{% block navItems %}
+<div class="container-sb d-flex align-items-center mx-auto">
+    <button id="getLocationBtn" class="btn-locationwithweather">Ubicación <svg
+            xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+            class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+            <path
+                d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+        </svg></button>
+        <a class="btn" href="/Restaurant"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+          </svg> <span>Volver</span>
+        </a>
+    <a class="btn" href="/contacto"><svg xmlns="http://www.w3.org/2000/svg" width="25"
+            height="25" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+            <path
+                d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
+        </svg><span>Quienes Somos?</span>
+    </a>
+</div>
+<div class="dropdown">
+    {% if user.is_authenticated %}
+    <button class="btn" id="user-btn" data-bs-toggle="dropdown" aria-expanded="false">
+        <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-helmet-ancient-greek-mythology-monsters-and-creatures-flaticons-flat-flat-icons.png" alt="external-helmet-ancient-greek-mythology-monsters-and-creatures-flaticons-flat-flat-icons"/><span>Bienvenido <strong>{{ user.username }}</strong></span>
+    </button>
+    {% else %}
+    <button class="btn" id="user-btn" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+            class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            <path fill-rule="evenodd"
+            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+        </svg><span>Identificarse</span>
+    </button>
+    {% endif %}
+
+    <ul class="dropdown-menu">
+        {% if user.is_authenticated %}
+        <li><a class="dropdown-item" href="{% url "profile" %}" id="ver-perfil">Ver Perfil</a></li>
+        <li><a class="dropdown-item" href="{% url "account_logout" %}" id="cerrar-sesion">Cerrar Sesión</a></li>
+        {% else %}
+        <li><a class="dropdown-item" href="{% url "account_login" %}">Iniciar Sesión</a></li>
+        <li><a class="dropdown-item" href="{% url "account_signup" %}">Registrarse</a></li>
+    {% endif %}
+    </ul>
+</div>
+{% endblock navItems %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<main class="container-check">
+    <div class="container-view">
+        <section class="cart-form">
+            <h2 class="title-delivery">Despacho a domicilio <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+            </svg></h2>
+            <form class="form-delivery" id="delivery-form" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="custom-label" for="comuna">Comuna:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa la Comuna" id="comuna" name="comuna" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-label" for="calle">Calle:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa Calle de domicilio" id="calle" name="calle" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-label" for="calle">Numero de casa:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa numero de domicilio" id="calle" name="calle" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-label" for="casa_departamento">Casa/Departamento:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa si es casa o departamento" id="casa_departamento" name="casa_departamento" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-label" for="detalle">Detalle (Departamento, Piso, etc.) OPCIONAL:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa especificaciones" id="detalle" name="detalle">
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-label" for="nombre_destinatario">Nombre del Destinatario:</label>
+                    <input class="custom-input" type="text" placeholder="Ingresa nombre de la persona que recibira el pedido" id="nombre_destinatario" name="nombre_destinatario" required>
+                </div>
+
+                <button class="btn-next" id="next-content">Guardar y continuar <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                  </svg></button>
+            </form>
+        </section>
+        
+        <section class="cart-content">
+            <table id="lista-carrito">
+                <thead>
+                    <tr>
+                        <th class="left-table text-center">Imagen</th>
+                        <th class="left-table text-center">Productos</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Precio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="carrito-body">
+                    {% if request.session.carrito.items %}
+                        {% for key, value in request.session.carrito.items %}
+                            <tr>
+                                <td class="left-table text-center"><img src="{{ value.imagen }}" alt="{{ value.nombre }}"></td>
+                                <td>{{ value.nombre }}</td>
+
+                                <td class="text-center">{{ value.precio }}</td>
+                                <td class="center-table"></td>
+                    
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">
+                                <div class="alert alert-danger text-center">
+                                    No hay Productos en el carrito
+                                </div>
+                            </td>
+                        </tr>    
+                    {% endif %}
+                    <tr>
+                        <th scope="row">Total:</th>
+                        <th>${{ total_carrito }}</th>
+                    </tr>     
+                </tbody>
+            </table>            
+            <div class="container-btn-cart">
+                <div class="col-6">
+                    <a href="{% url 'checkout' total=total_carrito %}">Ir a pagar</a>
+                </div></div>
+            </div>
+        </section>
+    </div>
+</main>
+{% else %}
+<div class="container-logged">
+    <h1>¡Hola! Debes:</h1>
+    <span class="message-login">inicia sesión o regístrate para continuar con el proceso de compra</span>
+    <div class="login-options">
+        <a class="btn-loged" href="{% url "account_login" %}">Iniciar Sesión <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+        </svg></a>
+        <h2 class="or">O</h2>
+        <a class="btn-loged" href="{% url "account_signup" %}">Registrarse <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-person-fill" viewBox="0 0 16 16">
+            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0m2 5.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-.245S4 12 8 12s5 1.755 5 1.755"/>
+        </svg></a>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static "js/sitefunction.js" %}"></script>
+{% endblock script %}

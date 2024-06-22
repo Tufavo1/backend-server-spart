@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+    <title>SpartSagan - Bienvenidos</title>
+{% endblock head %}
+
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock estilos %}
+
+{% block navItems %}
+    <div class="container-sb d-flex align-items-center mx-auto">
+        <button id="getLocationBtn" class="btn-locationwithweather">Ubicación <svg xmlns="http://www.w3.org/2000/svg"
+            width="20" height="20" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+        </svg></button>
+        <a class="btn" href="/Restaurant"><svg xmlns="http://www.w3.org/2000/svg" width="25"
+            height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+        </svg><span>Restaurant</span>
+        </a>
+        <a class="btn" href="/Contacto"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+            fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+            <path
+            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
+        </svg><span>Quienes Somos?</span>
+        </a>
+    </div>
+    <div class="dropdown">
+        {% if user.is_authenticated %}
+        <button class="btn" id="user-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <img width="30" height="30" src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-helmet-ancient-greek-mythology-monsters-and-creatures-flaticons-flat-flat-icons.png" alt="external-helmet-ancient-greek-mythology-monsters-and-creatures-flaticons-flat-flat-icons"/><span>Bienvenido <strong>{{ user.username }}</strong></span>
+        </button>
+        {% else %}
+        <button class="btn" id="user-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                <path fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+            </svg><span>Identificarse</span>
+        </button>
+        {% endif %}
+    
+        <ul class="dropdown-menu">
+            {% if user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url "profile" %}" id="ver-perfil">Ver Perfil</a></li>
+            <li><a class="dropdown-item" href="{% url "account_logout" %}" id="cerrar-sesion">Cerrar Sesión</a></li>
+            {% else %}
+            <li><a class="dropdown-item" href="{% url "account_login" %}">Iniciar Sesión</a></li>
+            <li><a class="dropdown-item" href="{% url "account_signup" %}">Registrarse</a></li>
+        {% endif %}
+        </ul>
+    </div>
+    <a href="{% url 'carrito' %}">
+        <button class="btn" id="user-cart">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-basket-fill"
+                viewBox="0 0 16 16">
+                <path
+                d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0z" />
+            </svg><span>carrito</span>
+        </button>
+    </a>
+    
+{% endblock navItems %}
+
+{% block content %}
+    <div class="slide active" id="slide1">
+        <div class="slide-content">
+        <div class="container-welcome">
+            <div class="content">
+            <div class="text">
+                <h1 class="text display-4">¡Bienvenidos a la guerra de sabores!</h1>
+                <p class="lead">
+                Explora sabores irresistibles y conveniencia excepcional en nuestro menú innovador.</p>
+                <a href="#slide2" class="btn btn-warning btn-lg">Quiero Ir a la Guerra!</a>
+            </div>
+            <div class="image">
+                <img src="{% static "img/bg.png" %}" alt="Hamburguesa bienvenida" class="img-fluid">
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide2">
+        <div class="slide-content">
+        <main class="container-main">
+            <div class="title-section">
+            <h4>Deléitate con nuestros sabores exquisitos, donde cada plato cuenta una historia de tradición y pasión
+                culinaria</h4>
+            </div>
+            <div class="text">
+            <h1 class="menu-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                class="bi bi-star-fill star" viewBox="0 0 16 16">
+                <path
+                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg><span>Revisa nuestro Menú</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                fill="currentColor" class="bi bi-star-fill star" viewBox="0 0 16 16">
+                <path
+                    d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+            </h1>
+            </div>
+            <div class="card-container">
+                {% for cate in cate %}
+                <div class="card-link">
+                    <div class="card">
+                        <img src="{{ cate.img.url }}" alt="{{ cate.img.url }}">
+                        <a href="{% if cate.nombre == 'Restaurant' %}{% url 'Restaurant' %}{% elif cate.nombre == 'Almuerzos' %}{% url 'Almuerzos' %}{% elif cate.nombre == 'Postres' %}{% url 'Postres' %}{% elif cate.nombre == 'Bebidas' %}{% url 'Bebestibles' %}{% elif cate.nombre == 'Licores' %}{% url 'Licores' %}{% endif %}" class="card-overlay"> 
+                            <div class="card-info">
+                                <h1 class="category-name">{{ cate.nombre }}</h1>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+        <div class="slide" id="slide3">
+            <div class="slide-content">
+            <main class="container-main">
+                <div class="title-section">
+                <h4>Revisa Nuestros productos mas destacados</h4>
+                </div>
+                <div class="text">
+                <h1 class="menu-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-star-fill star" viewBox="0 0 16 16">
+                    <path
+                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg><span>Productos Destacados</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    fill="currentColor" class="bi bi-star-fill star" viewBox="0 0 16 16">
+                    <path
+                        d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                </h1>
+                </div>
+                
+                <div class="container mt-5">
+                    <div class="card-list-products">
+                    {% for categoria, productos_destacados in productos_destacados_por_categoria %}
+                        {% for p in productos_destacados %}
+                        <a href="{% url 'ver_resenas' p.sku %}" class="card-destacados abrir-producto" id="{{p.cod}}" data-categoria="{{p.categoria.nombre}}" data-precio="{{p.precio}}">
+                            <div class="card-img">
+                                <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
+                            </div>
+                            <h2 class="product-title">{{ p.nombre }}</h2>
+                            <div class="product-details">
+                                <div class="product-price">Precio: ${{ p.precio }}</div>
+                                <div class="product-stock"><strong>Stock: <span>{{ p.stock }}</span></strong></div>
+                              </div>
+                        </a>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                </div>
+            
+            
+        </main>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static "js/sitefunction.js" %}"></script>
+{% endblock  %}

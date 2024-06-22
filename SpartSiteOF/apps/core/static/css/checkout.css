@@ -1,0 +1,302 @@
+* {
+    font-family: monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background-color: #000 !important;
+}
+
+/*Estilos para el header slide 1*/
+.navbar {
+    color: #000;
+    width: 100%;
+    background-color: #000;
+}
+
+.navbar-brand img {
+    max-width: 120px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    -ms-border-radius: 30px;
+    -o-border-radius: 30px;
+}
+
+.search {
+    width: 200px;
+    text-align: center;
+}
+
+.navbar-toggler {
+    color: #000;
+    margin-left: auto;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    margin-left: 10px;
+    color: #fff !important;
+    background-color: #000 !important;
+    padding: 10px;
+}
+
+.btn:hover {
+    background-color: #f4fd1d !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+svg {
+    margin-right: 2px;
+}
+
+span {
+    font-size: 15px;
+}
+
+.copyright {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+/*Estilos para el reloj*/
+#clock-container {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    border: 4px solid #f4fd1d;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    background-color: #000;
+    padding: 10px;
+    z-index: 9999;
+}
+
+#config-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-right: 4px solid #f4fd1d;
+    margin-left: -5px;
+    margin-right: 10px;
+}
+
+#config-button:hover {
+    color: #f4fd1d;
+}
+
+#clock {
+    color: #fff;
+}
+
+.dropdown-confi {
+    transform: translateY(-272px);
+    -webkit-transform: translateY(-272px);
+    -moz-transform: translateY(-272px);
+    -ms-transform: translateY(-272px);
+    -o-transform: translateY(-272px);
+    width: 240px;
+    left: -10px;
+    border-radius: 30px !important;
+    -webkit-border-radius: 30px !important;
+    -moz-border-radius: 30px !important;
+    -ms-border-radius: 30px !important;
+    -o-border-radius: 30px !important;
+    border-top: 2px solid #f4fd1d !important;
+    background-color: #000 !important;
+}
+
+.dropdown-menu-end {
+    transform-origin: top;
+}
+
+.btn-menu {
+    background-color: #000;
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.btn-menu:hover {
+    color: #f4fd1d;
+}
+
+.btn-menu :where(span) {
+    font-size: 15px;
+    margin-left: 5px;
+    text-align: start;
+}
+
+/*Estilos para el formulario de pago*/
+/* Estilo general para el formulario */
+#form-checkout {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo para cada contenedor de campo */
+#form-checkout .container {
+    margin-bottom: 15px;
+}
+
+/* Estilo para los campos de entrada */
+#form-checkout input[type="text"],
+#form-checkout input[type="email"],
+#form-checkout select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Estilo para el botón de enviar */
+#form-checkout__submit {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form-checkout__submit:hover {
+    background-color: #218838;
+}
+
+/* Estilo para el placeholder */
+#form-checkout input::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+/* Estilo para los campos ocultos */
+#form-checkout input[type="hidden"] {
+    display: none;
+}
+
+/* Estilo para alinear y espaciado */
+#form-checkout .container,
+#form-checkout input,
+#form-checkout select {
+    margin-top: 10px;
+}
+
+#form-checkout .container {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-checkout .container label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/*Estilos para el footer*/
+.footer {
+    background-color: #fff;
+    color: #000 !important;
+    margin-top: 15%;
+    border-radius: 105px 105px 0 0;
+    -webkit-border-radius: 105px 105px 0 0;
+    -moz-border-radius: 105px 105px 0 0;
+    -ms-border-radius: 105px 105px 0 0;
+    -o-border-radius: 105px 105px 0 0;
+}
+
+.container-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.contact {
+    margin-top: 30px;
+}
+
+.contact h5 {
+    font-size: 25px;
+    margin-left: 60px;
+}
+
+.contact p {
+    margin-top: 10px;
+}
+
+.formulario-vip {
+    margin-top: 30px;
+}
+
+.form {
+    text-align: center;
+}
+
+.input-group {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-control {
+    border: 4px solid #ebf909;
+    text-align: center;
+}
+
+.btn-footer {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.btn-footer:hover {
+    background-color: #fff;
+    color: #000;
+    border: 6px solid #f4fd1d;
+    padding: 5px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 30px;
+    margin-right: 30px;
+}
+
+.copyright :where(h6) {
+    color: #000;
+    font-weight: 400;
+    padding: 10px;
+}
