@@ -1,8 +1,61 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("volverBtn").addEventListener("click", function (event) {
+    const filterForm = document.getElementById("filter-form");
+    const searchInput = document.getElementById("search-input");
+    const productList = document.getElementById("lista");
+
+    const priceMinInput = document.getElementById("price-min");
+    const priceMaxInput = document.getElementById("price-max");
+    const minRangeInput = document.getElementById("min-range");
+    const maxRangeInput = document.getElementById("max-range");
+
+    function syncRangeToInput() {
+        priceMinInput.value = minRangeInput.value;
+        priceMaxInput.value = maxRangeInput.value;
+    }
+
+    function syncInputToRange() {
+        minRangeInput.value = priceMinInput.value;
+        maxRangeInput.value = priceMaxInput.value;
+    }
+
+    minRangeInput.addEventListener("input", syncRangeToInput);
+    maxRangeInput.addEventListener("input", syncRangeToInput);
+    priceMinInput.addEventListener("input", syncInputToRange);
+    priceMaxInput.addEventListener("input", syncInputToRange);
+
+    function applyFilters() {
+        const priceMin = parseFloat(priceMinInput.value) || 0;
+        const priceMax = parseFloat(priceMaxInput.value) || 1000000;
+        const selectedPlatillos = Array.from(filterForm.querySelectorAll('input[name="platillo"]:checked')).map(el => el.value);
+        const searchText = searchInput.value.toLowerCase();
+
+        const params = new URLSearchParams();
+        params.append('precio_min', priceMin);
+        params.append('precio_max', priceMax);
+        if (selectedPlatillos.length > 0) {
+            selectedPlatillos.forEach(platillo => params.append('platillo', platillo));
+        }
+        if (searchText) {
+            params.append('buscar', searchText);
+        }
+
+        fetch(`?${params.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                productList.innerHTML = new DOMParser().parseFromString(html, 'text/html').getElementById('lista').innerHTML;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    filterForm.addEventListener("submit", function (event) {
         event.preventDefault();
-        window.history.back();
+        applyFilters();
     });
+
+    searchInput.addEventListener("input", applyFilters);
+
+    applyFilters();
+
     document.querySelectorAll('.abrir-resenas').forEach(button => {
         button.addEventListener('click', function () {
             const url = button.dataset.url;

@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .mercadopago import create_payment
 from django.views.decorators.http import require_POST
-from django.contrib import messages
 
 
 # Create your views here.
@@ -37,10 +36,22 @@ def CargarIndex(request):
 
 
 def CargarRestaurant(request):
-    productos = Producto.objects.filter(stock__gt="0").order_by("nombre")
+    productos = Producto.objects.filter(stock__gt=0).order_by("nombre")
     categorias = Categoria.objects.all()
     platillo = Platillo.objects.values("nombre").distinct()
-    paginator = Paginator(productos, 9)
+    precio_min = float(request.GET.get("precio_min", 0))
+    precio_max = float(request.GET.get("precio_max", 1000000))
+    productos = productos.filter(precio__gte=precio_min, precio__lte=precio_max)
+    platillo_seleccionado = request.GET.getlist("platillo")
+
+    if platillo_seleccionado:
+        productos = productos.filter(platillo__nombre__in=platillo_seleccionado)
+    buscar = request.GET.get("buscar", "")
+
+    if buscar:
+        productos = productos.filter(nombre__icontains=buscar)
+
+    paginator = Paginator(productos, 12)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
@@ -56,10 +67,22 @@ def CargarRestaurant(request):
 
 
 def CargarAlmuerzos(request):
-    prodAlm = Producto.objects.filter(stock__gt="0", platillo="2").order_by("nombre")
-    platillo = Platillo.objects.all()
-    categorias = Producto.objects.values("platillo").distinct()
-    paginator = Paginator(prodAlm, 6)
+    prodAlm = Producto.objects.filter(stock__gt=0, categoria=2).order_by("nombre")
+    categorias = Categoria.objects.all()
+    platillo = Platillo.objects.values("nombre").distinct()
+    precio_min = float(request.GET.get("precio_min", 0))
+    precio_max = float(request.GET.get("precio_max", 1000000))
+    productos = prodAlm.filter(precio__gte=precio_min, precio__lte=precio_max)
+    platillo_seleccionado = request.GET.getlist("platillo")
+
+    if platillo_seleccionado:
+        productos = productos.filter(platillo__nombre__in=platillo_seleccionado)
+    buscar = request.GET.get("buscar", "")
+
+    if buscar:
+        productos = productos.filter(nombre__icontains=buscar)
+
+    paginator = Paginator(productos, 8)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
@@ -71,10 +94,22 @@ def CargarAlmuerzos(request):
 
 
 def CargarPostres(request):
-    prodPost = Producto.objects.filter(stock__gt="0", platillo="3").order_by("nombre")
+    prodPost = Producto.objects.filter(stock__gt=0, categoria=3).order_by("nombre")
     categorias = Categoria.objects.all()
-    platillo = Producto.objects.values("platillo").distinct()
-    paginator = Paginator(prodPost, 6)
+    platillo = Platillo.objects.values("nombre").distinct()
+    precio_min = float(request.GET.get("precio_min", 0))
+    precio_max = float(request.GET.get("precio_max", 1000000))
+    productos = prodPost.filter(precio__gte=precio_min, precio__lte=precio_max)
+    platillo_seleccionado = request.GET.getlist("platillo")
+
+    if platillo_seleccionado:
+        productos = productos.filter(platillo__nombre__in=platillo_seleccionado)
+    buscar = request.GET.get("buscar", "")
+
+    if buscar:
+        productos = productos.filter(nombre__icontains=buscar)
+
+    paginator = Paginator(productos, 8)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
@@ -86,10 +121,22 @@ def CargarPostres(request):
 
 
 def CargarLicores(request):
-    prodLic = Producto.objects.filter(stock__gt="0", platillo="2").order_by("nombre")
+    prodLic = Producto.objects.filter(stock__gt=0, categoria=5).order_by("nombre")
     categorias = Categoria.objects.all()
-    platillo = Producto.objects.values("platillo").distinct()
-    paginator = Paginator(prodLic, 6)
+    platillo = Platillo.objects.values("nombre").distinct()
+    precio_min = float(request.GET.get("precio_min", 0))
+    precio_max = float(request.GET.get("precio_max", 1000000))
+    productos = prodLic.filter(precio__gte=precio_min, precio__lte=precio_max)
+    platillo_seleccionado = request.GET.getlist("platillo")
+
+    if platillo_seleccionado:
+        productos = productos.filter(platillo__nombre__in=platillo_seleccionado)
+    buscar = request.GET.get("buscar", "")
+
+    if buscar:
+        productos = productos.filter(nombre__icontains=buscar)
+
+    paginator = Paginator(productos, 8)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
@@ -101,10 +148,22 @@ def CargarLicores(request):
 
 
 def CargarBebestibles(request):
-    prodBeb = Producto.objects.filter(stock__gt="0", platillo="1").order_by("nombre")
+    prodBeb = Producto.objects.filter(stock__gt=0, categoria=4).order_by("nombre")
     categorias = Categoria.objects.all()
-    platillo = Producto.objects.values("platillo").distinct()
-    paginator = Paginator(prodBeb, 6)
+    platillo = Platillo.objects.values("nombre").distinct()
+    precio_min = float(request.GET.get("precio_min", 0))
+    precio_max = float(request.GET.get("precio_max", 1000000))
+    productos = prodBeb.filter(precio__gte=precio_min, precio__lte=precio_max)
+    platillo_seleccionado = request.GET.getlist("platillo")
+
+    if platillo_seleccionado:
+        productos = productos.filter(platillo__nombre__in=platillo_seleccionado)
+    buscar = request.GET.get("buscar", "")
+
+    if buscar:
+        productos = productos.filter(nombre__icontains=buscar)
+
+    paginator = Paginator(productos, 8)
     page_number = request.GET.get("page")
     page_products = paginator.get_page(page_number)
 
@@ -116,7 +175,36 @@ def CargarBebestibles(request):
 
 
 def CargarCarrito(request):
-    return render(request, "pages/pagos/carrito.html")
+    carrito = request.session.get("carrito", {})
+    codigos_productos = list(carrito.keys())
+    productos = Producto.objects.filter(sku__in=codigos_productos)
+    carrito_items = []
+
+    for producto in productos:
+        cantidad = carrito[str(producto.sku)]
+        carrito_items.append({"producto": producto, "cantidad": cantidad})
+
+    context = {"carrito_items": carrito_items}
+    return render(request, "pages/pagos/carrito.html", context)
+
+
+def eliminar_producto(request, sku_producto):
+    if request.method == "POST":
+        carrito = request.session.get("carrito", {})
+        if str(sku_producto) in carrito:
+            del carrito[str(sku_producto)]
+            request.session["carrito"] = carrito
+        return redirect("carrito")
+
+    return HttpResponse(status=405)
+
+
+def vaciar_carrito(request):
+    if request.method == "POST":
+        request.session["carrito"] = {}
+        return redirect("carrito")
+
+    return HttpResponse(status=405)
 
 
 @require_POST
@@ -137,14 +225,13 @@ def agregar_al_carrito(request):
 
         request.session["carrito"] = carrito
         request.session.modified = True
+        return JsonResponse({"success": "Producto agregado al carrito."})
     else:
         return JsonResponse({"error": "invalid_quantity"}, status=400)
 
-    return JsonResponse({"success": "Producto agregado al carrito."})
-
 
 def CargarPerfil(request):
-    return render(request, "account/profile.html")
+    return render(request, "pages/user/profile.html")
 
 
 def ver_resenas(request, p_sku):

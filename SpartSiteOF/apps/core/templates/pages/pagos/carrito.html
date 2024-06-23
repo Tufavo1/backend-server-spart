@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load formato_moneda %}
 
 {% block head %}
     <title>SpartSagan - Carrito de Compras</title>
@@ -107,40 +108,45 @@
             <table id="lista-carrito">
                 <thead>
                     <tr>
+                        <th class="left-table text-center">SKU</th>
                         <th class="left-table text-center">Imagen</th>
-                        <th class="left-table text-center">Productos</th>
+                        <th class="left-table text-center">Nombre</th>
                         <th class="text-center">Cantidad</th>
                         <th class="text-center">Precio</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody id="carrito-body">
-                    {% if request.session.carrito.items %}
-                        {% for key, value in request.session.carrito.items %}
-                            <tr>
-                                <td class="left-table text-center"><img src="{{ value.imagen }}" alt="{{ value.nombre }}"></td>
-                                <td>{{ value.nombre }}</td>
-
-                                <td class="text-center">{{ value.precio }}</td>
-                                <td class="center-table"></td>
-                    
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="5">
-                                <div class="alert alert-danger text-center">
-                                    No hay Productos en el carrito
-                                </div>
-                            </td>
-                        </tr>    
-                    {% endif %}
-                    <tr>
-                        <th scope="row">Total:</th>
-                        <th>${{ total_carrito }}</th>
-                    </tr>     
+                <tbody>
+                    {% for item in carrito_items %}
+                    <tr class="cart-item" 
+                        data-sku="{{ item.producto.sku }}"
+                        data-nombre="{{ item.producto.nombre }}"
+                        data-cantidad="{{ item.cantidad }}"
+                        data-precio="{{ item.producto.precio }}"
+                        data-imagen="{{ item.producto.imagen.url }}">
+                        <td>{{ item.producto.sku }}</td>
+                        <td><img src="{{ item.producto.imagen.url }}" class="card-img-top" alt="{{ item.producto.nombre }}"></td>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item.producto.precio|formato_moneda }}</td>
+                        <td>
+                            <form action="{% url 'eliminar_producto' item.producto.sku %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg></button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
-            </table>            
+            </table>  
+            <div class="text-center mt-3">
+                <form action="{% url 'vaciar_carrito' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Vaciar Carrito</button>
+                </form>
+            </div>              
             <div class="container-btn-cart">
                 <div class="col-6">
                     <a href="{% url 'checkout' total=total_carrito %}">Ir a pagar</a>
@@ -171,4 +177,5 @@
 
 {% block script %}
     <script src="{% static "js/sitefunction.js" %}"></script>
+    <script src="{% static "js/cart.js" %}"></script>
 {% endblock script %}

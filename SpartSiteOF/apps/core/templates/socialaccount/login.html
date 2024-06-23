@@ -1,10 +1,51 @@
-{% extends "socialaccount/base_entrance.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load allauth %}
-{% block head_title %}
-    {% trans "Sign In" %}
-{% endblock head_title %}
+{% load static %}
+
+{% block head %}
+    <title>SpartSagan - Desea Continuar?</title>
+{% endblock %}
+
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock  %}
+
+{% block navItems %}
+<div class="container-sb d-flex align-items-center mx-auto">
+    <button id="getLocationBtn" class="btn-locationwithweather">Ubicación <svg
+            xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+            class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+            <path
+                d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+        </svg></button>
+        <a class="btn" href="/home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+            </svg>
+            <span>Volver al Home</span>
+        </a>
+    <a class="btn" href="/contacto"><svg xmlns="http://www.w3.org/2000/svg" width="25"
+            height="25" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+            <path
+                d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1z" />
+        </svg><span>Quienes Somos?</span>
+    </a>
+</div>
+<a href="{% url 'carrito' %}">
+    <button class="btn" id="user-cart" data-count="0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-basket-fill"
+            viewBox="0 0 16 16">
+            <path
+            d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0z" />
+        </svg><span>carrito</span>
+    </button>
+</a>
+{% endblock navItems %}
+
+
 {% block content %}
+<div class="container">
     {% if process == "connect" %}
         {% element h1 %}
             {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
@@ -17,7 +58,7 @@
             {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
         {% endelement %}
         {% element p %}
-            {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
+            {% blocktrans with provider.name as provider %}Bienvenido/a de vuelta! Haz click en continuar para iniciar sesión desde {{ provider }}.{% endblocktrans %}
         {% endelement %}
     {% endif %}
     {% element form method="post" no_visible_fields=True %}
@@ -28,4 +69,9 @@
             {% endelement %}
         {% endslot %}
     {% endelement %}
+</div>
 {% endblock content %}
+
+{% block script %}
+    <script src="{% static "js/sitefunction.js" %}"></script>
+{% endblock script %}

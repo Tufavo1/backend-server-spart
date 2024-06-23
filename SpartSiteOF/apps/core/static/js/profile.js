@@ -1,6 +1,37 @@
-function copyToClipboard() {
-    var textField = document.getElementById("descuento");
-    textField.select();
-    document.execCommand("copy");
-    alert("Texto copiado: " + textField.value);
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const card = document.querySelector('.card');
+    const status = false;
+
+    if (status) {
+        card.querySelector('.card-tag').textContent = 'Activo';
+        card.querySelector('.card-tag').style.backgroundColor = '#007bff';
+    }
+
+    const allLinks = document.querySelectorAll(".tabs a");
+    const allTabs = document.querySelectorAll(".tab-content");
+
+    allLinks.forEach((elem) => {
+        elem.addEventListener("click", function () {
+            const linkId = elem.id;
+            const hrefLinkClick = elem.href;
+
+            allLinks.forEach((link) => {
+                if (link.href == hrefLinkClick) {
+                    link.classList.add("active");
+                } else {
+                    link.classList.remove("active");
+                }
+            });
+
+            allTabs.forEach((tab) => {
+                const id = tab.id;
+                if (id.includes(linkId)) {
+                    tab.classList.add("tab-content--active");
+                } else {
+                    tab.classList.remove("tab-content--active");
+                }
+            });
+        });
+    });
+
+});

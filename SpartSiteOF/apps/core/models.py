@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from allauth.socialaccount.signals import social_account_added
+from allauth.socialaccount.models import SocialAccount
+from django.dispatch import receiver
 
 
 class Categoria(models.Model):
@@ -31,8 +34,13 @@ class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     platillo = models.ForeignKey(Platillo, on_delete=models.CASCADE)
     stock = models.IntegerField(null=False)
-    precio = models.IntegerField(null=False, default=0)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     ventas = models.IntegerField(default=0)
+    ingredientes = models.TextField(
+        null=True,
+        blank=True,
+        help_text="Formato: - Ingrediente 1\n- Ingrediente 2, etc.",
+    )
 
     def __str__(self):
         txt = "[{0}] {1} - {2}"
@@ -58,8 +66,3 @@ class Boleta(models.Model):
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     imagen_producto = models.ImageField(upload_to="productos/")
     fecha_hora = models.DateTimeField(auto_now_add=True)
-
-
-class CustomUser(AbstractUser):
-    # Añadir campos adicionales si es necesario
-    phone_number = models.CharField(max_length=15, blank=True, null=True)

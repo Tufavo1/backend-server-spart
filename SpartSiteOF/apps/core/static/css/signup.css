@@ -1,0 +1,115 @@
+.signup {
+    padding: 90px 75px;
+    background-color: #fff;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 30px;
+    margin: 0 auto;
+}
+
+.signup :where(h1) {
+    font-size: 40px;
+    font-weight: 900;
+    color: #000;
+    text-align: center;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.signup :where(li) {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.signup :where(a[title="Google"]) {
+    display: flex;
+    width: 100%;
+    background-image: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    justify-content: center;
+    padding: 15px;
+    font-size: 25px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+.signup :where(a[title="Google"]):hover {
+    filter: brightness(1.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.signup :where(h4) {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 30px;
+}
+
+.signup :where(label) {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.signup :where(input) {
+    display: block;
+    width: 100%;
+    padding: 25px;
+    border-radius: 14px;
+    background-color: #f2f3f5;
+    outline: none;
+    border: 0;
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+button[type="submit"] {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #ebf909;
+    color: #000;
+    border: 2px solid #000;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
