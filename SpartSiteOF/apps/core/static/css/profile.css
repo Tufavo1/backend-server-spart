@@ -1,3 +1,51 @@
+/* Estilos para el botón flotante */
+.enlace-flotante {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    z-index: 9999;
+    animation: flotar 2s infinite;
+    -webkit-animation: flotar 2s infinite;
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.contenido-flotante img {
+    width: 60px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 2px solid white;
+    vertical-align: middle;
+}
+
+.contenido-flotante p {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+@keyframes flotar {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+a {
+    text-decoration: none !important;
+}
+
 /*Estilos para el carrito*/
 .cart-counter {
     position: absolute;

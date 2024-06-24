@@ -73,6 +73,29 @@ body {
     border: 2px solid #fff !important;
 }
 
+.btn-anuncio {
+    margin-left: 10px;
+    color: #fff !important;
+    background-color: #000 !important;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.btn-anuncio:hover {
+    background-color: #1dfd22 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.btn-anuncio :where(svg) {
+    color: #fd1d1d;
+}
+
 svg {
     margin-right: 2px;
 }
