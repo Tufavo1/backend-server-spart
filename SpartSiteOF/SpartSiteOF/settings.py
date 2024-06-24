@@ -87,7 +87,7 @@ ROOT_URLCONF = "SpartSiteOF.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "apps/core/templates"],
+        "DIRS": [BASE_DIR / "core/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
