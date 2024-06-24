@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load formato_moneda %}
 
 {% block head %}
     <title>SpartSagan - Perfil</title>
@@ -18,11 +19,11 @@
             <path
                 d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
         </svg></button>
-        <a class="btn" href="#" id="volverBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-              </svg>
-            <span>Volver</span>
+        <a class="btn" href="/home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+            </svg>
+            <span>Volver al Home</span>
         </a>
     <a class="btn" href="/contacto"><svg xmlns="http://www.w3.org/2000/svg" width="25"
             height="25" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
@@ -58,13 +59,14 @@
     {% endif %}
     </ul>
 </div>
-<a href="{% url 'carrito' %}">
-    <button class="btn" id="user-cart">
+<a id="cartLink" href="{% url 'carrito' %}">
+    <button class="btn" id="user-cart" data-count="0">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-basket-fill"
             viewBox="0 0 16 16">
             <path
             d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0z" />
-        </svg><span>carrito</span>
+        </svg><span class="badge cart-counter">{{ carrito_count }}</span>
+
     </button>
 </a>
 
@@ -88,18 +90,30 @@
         </header>
         <div class="Profile_name">
             <h1>Datos Personales</h1>
-            <h2>Usuario: {{ user.username }}</h2>
-            <p>correo electronico: {{ user.email }}</p>  
+            <label><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+              </svg> Usuario</label>
+            <h2>{{ user.username }}</h2>
+            <label><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-vcard-fill" viewBox="0 0 16 16">
+                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm9 1.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5M9 8a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4A.5.5 0 0 0 9 8m1 2.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5m-1 2C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 0 2 13h6.96q.04-.245.04-.5M7 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0"/>
+              </svg> Nombre Completo</label>
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>  
+            <label><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-envelope-at-fill" viewBox="0 0 16 16">
+                <path d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2zm-2 9.8V4.698l5.803 3.546zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 9.671V4.697l-5.803 3.546.338.208A4.5 4.5 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671"/>
+                <path d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791"/>
+              </svg> Correo Electronico</label>
+            <h2>{{ user.email }}</h2>  
+            <div class="RoutesLinks">
+                <span>Acceso Rapido</span>
+                <ul class="routes-links">
+                        <li><a href="/Almuerzos"><img width="50" height="50" src="https://img.icons8.com/3d-fluency/94/hamburger.png" alt="hamburger"/></a></li>
+                        <li><a href="/Bebestibles"><img width="50" height="50" src="https://img.icons8.com/3d-fluency/94/cola.png" alt="cola"/></a></li>
+                        <li><a href="/Postres"><img width="50" height="50" src="https://img.icons8.com/fluency/48/cake.png" alt="cake"/></a></li>
+                        <li><a href="/Licores"><img width="50" height="50" src="https://img.icons8.com/fluency/48/vodka-shot.png" alt="vodka-shot"/></a></li>
+                <ul>
+            </div>
         </div>
-        <div class="RoutesLinks">
-            <span>Acceso Rapido</span>
-            <ul class="routes-links">
-                    <li><a href="/Almuerzos"><img width="50" height="50" src="https://img.icons8.com/3d-fluency/94/hamburger.png" alt="hamburger"/></a></li>
-                    <li><a href="/Bebestibles"><img width="50" height="50" src="https://img.icons8.com/3d-fluency/94/cola.png" alt="cola"/></a></li>
-                    <li><a href="/Postres"><img width="50" height="50" src="https://img.icons8.com/fluency/48/cake.png" alt="cake"/></a></li>
-                    <li><a href="/Licores"><img width="50" height="50" src="https://img.icons8.com/fluency/48/vodka-shot.png" alt="vodka-shot"/></a></li>
-            <ul>
-        </div>
+
         <main class="contenedor-main">
             <div class="tabs-wrapper">
                 <ul class="tabs">
@@ -116,6 +130,62 @@
                 </ul> 
             </div>
             <div id="tab1-content" class="tab-content tab-content--active">
+                {% if user.is_subscribed %}
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-top">
+                            <div class="card-tag-active">Activo</div>
+                            <div class="card-info">
+                                <h1 class="card-top-info__header">
+                                    ¡Bienvenido, cliente premium!</h1>
+                                    <p>Disfruta de estos beneficios exclusivos:</p>
+                                    <ul>
+                                        <li>Envío gratuito en todos sus pedidos</li>
+                                        <li>Descuentos especiales en productos seleccionados</li>
+                                        <li>Atención personalizada y prioritaria</li>
+                                        <li>Acceso anticipado a nuevos productos</li>
+                                        <li>Eventos y experiencias exclusivas</li>
+                                        
+                                    </ul>
+                                    {% if codigo_descuento %}
+                                    <p>Código de descuento disponible: <strong>{{ codigo_descuento.codigo }}</strong></p>
+                                    {% endif %}
+                                </div>
+                        </div>
+                            <div class="card-bottom">
+                                <div class="card-bottom-info">
+                                    <div class="card-amount total" data-total-con-iva="{{ total_con_iva }}">
+                                        <span>Monto:</span>
+                                        <span>5000 / por mes</span>
+                                    </div>
+                                </div>
+                                <div class="billing-date">
+                                    <span>Los pagos son Mensuales</span>
+                                </div>      
+                            </div>
+                            <button type="button" class="btn view-details-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <span>Cancelar Subscripcion</span>
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                </div>
+                {% else %}
                 <div class="card">
                     <div class="card-content">
                         <div class="card-top">
@@ -126,39 +196,82 @@
                                 <p>Obtendras muchas cosas al momento de suscribirte como hermosos y grandes descuentos que salvaran tu bolsillo en tiempos de guerra.</p>
                             </div>
                         </div>
-
                             <div class="card-bottom">
                                 <div class="card-bottom-info">
-                                    <div class="card-amount">
+                                    <div class="card-amount total" data-total-con-iva="{{ total_con_iva }}">
                                         <span>Monto:</span>
-                                        <span>$5000 / por mes</span>
+                                        <span>5000 / por mes</span>
                                     </div>
                                 </div>
                                 <div class="billing-date">
                                     <span>Los pagos son Mensuales</span>
                                 </div>      
                             </div>
-                            <button class="btn view-details-btn">
+                            <button type="button" class="btn view-details-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <span>Suscribirse</span>
                             </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                         </div>
                 </div>
+                {% endif %}
             </div>
             <div id="tab2-content" class="tab-content tab-content">
-                    <div class="card-body text-center">
+                    <div class="card-body text-start">
                         <h4>Historial de Compras</h4>
                         <div class="table-container mb-2">
                             <table class="table">
                                 <thead>
-                                    <th scope="row">N° transaccion</th>
-                                    <td colspan="2">Nombre del producto</td>
+                                    <th>Imagen</th>
+                                    <td>Fecha de Compra</td>
+                                    <td>Nombre del producto</td>
                                     <td>Cantidad</td>
-                                    <td>Precio</td>
+                                    <td>Precio Total</td>
+                                    <td>Status</td>
                                 </thead>
                                 <tbody class="table-group-divider listaHistorial">
+                                    {% for order in orders %}
+                                {% for item in order.items.all %}
+                            <tr>
+                                <td style="display:none">{{ order.id }}</td>
+                                <td><img src="{{ item.product.imagen.url }}" alt="{{ item.product.nombre }}" width="100"></td>
+                                <td>{{ order.created_at }}</td>
+                                <td>{{ item.product.nombre }}</td>
+                                <td>X{{ item.quantity }}</td>
+                                <td>{{ order.total_amount|formato_moneda }}</td>
+                                <td>
+                                    {% if order.status == 'processing' %}
+                                        {{ order.status }} 
+                                    {% else %}
+                                    <span class="truck-icon">
+                                        Por Enviar <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                                            <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                                          </svg>
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
                                 </tbody>
                             </table>
                     </div>
+                    <a href="{% url 'order_history' %}" class="btn-sidebar-load">Ver Boletas</a>
                 </div>
             </div>
             <div id="tab3-content" class="tab-content tab-content">
@@ -173,16 +286,10 @@
                                 <th>Precio</th>
                             </tr>
                         </thead>
-                        <tbody class="container-table-seg-tbody">
-                            <tr class="container-head-2">
-                                <td data-bs-toggle="modal" data-bs-target="#exampleModal">123456</td>
-                                <td data-bs-toggle="modal" data-bs-target="#exampleModal">2024-05-22</td>
-                                <td data-bs-toggle="modal" data-bs-target="#exampleModal">Producto A</td>
-                                <td data-bs-toggle="modal" data-bs-target="#exampleModal">2</td>
-                                <td data-bs-toggle="modal" data-bs-target="#exampleModal">$20.000</td>
-                                <td style="display:none"><button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Seguimiento</button></td>
-                            </tr>
+                        <tbody>
+                            
                         </tbody>
+
                     </table>
                 </div>
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

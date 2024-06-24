@@ -1,6 +1,16 @@
-{% extends "socialaccount/base_entrance.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load allauth %}
+{% load static %}
+
+{% block head %}
+    <title>SpartSagan - Inicio desde Google</title>
+{% endblock %}
+
+{% block estilos %}
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+{% endblock  %}
+
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}

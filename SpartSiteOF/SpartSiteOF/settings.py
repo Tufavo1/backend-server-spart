@@ -87,7 +87,7 @@ ROOT_URLCONF = "SpartSiteOF.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "apps/core/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,7 +96,11 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.request",
-                "apps.core.context_processor.total_carrito",
+                # Procesador del contexto del carrito personalizado
+                "apps.core.context_processor.subtotal_carrito",
+                # Procesador del contexto del subtotal del carrito
+                "apps.core.context_processor.carrito_counter",
+                # procesador del contexto para el descuento
             ],
         },
     },
@@ -104,7 +108,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "SpartSiteOF.wsgi.application"
 
-AUTH_USER_MODEL = "apps.core.CustomUser"
+AUTH_USER_MODEL = "core.CustomUser"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -182,3 +186,7 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+# aqui estoy habilitando para recuperar la info de google
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_QUERY_EMAIL = True

@@ -1,191 +1,130 @@
-const mp = new MercadoPago("TEST-b808169d-3e35-4df4-addd-38848a326728");
-
-const cardNumberElement = mp.fields.create('cardNumber', {
-    placeholder: "Número de la tarjeta"
-}).mount('form-checkout__cardNumber');
-const expirationDateElement = mp.fields.create('expirationDate', {
-    placeholder: "MM/YY",
-}).mount('form-checkout__expirationDate');
-const securityCodeElement = mp.fields.create('securityCode', {
-    placeholder: "Código de seguridad"
-}).mount('form-checkout__securityCode');
-
-
-(async function getIdentificationTypes() {
-    try {
-        const identificationTypes = await mp.getIdentificationTypes();
-        const identificationTypeElement = document.getElementById('form-checkout__identificationType');
-
-        createSelectOptions(identificationTypeElement, identificationTypes);
-    } catch (e) {
-        return console.error('Error getting identificationTypes: ', e);
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-})();
-
-function createSelectOptions(elem, options, labelsAndKeys = { label: "name", value: "id" }) {
-    const { label, value } = labelsAndKeys;
-
-    elem.options.length = 0;
-
-    const tempOptions = document.createDocumentFragment();
-
-    options.forEach(option => {
-        const optValue = option[value];
-        const optLabel = option[label];
-
-        const opt = document.createElement('option');
-        opt.value = optValue;
-        opt.textContent = optLabel;
-
-        tempOptions.appendChild(opt);
-    });
-
-    elem.appendChild(tempOptions);
+    return cookieValue;
 }
 
+const csrftoken = getCookie('csrftoken');
+const totalConIva = parseFloat(document.querySelector('.total').dataset.totalConIva);
 
-const paymentMethodElement = document.getElementById('paymentMethodId');
-const issuerElement = document.getElementById('form-checkout__issuer');
-const installmentsElement = document.getElementById('form-checkout__installments');
-
-const issuerPlaceholder = "Banco emisor";
-const installmentsPlaceholder = "Cuotas";
-
-let currentBin;
-cardNumberElement.on('binChange', async (data) => {
-    const { bin } = data;
-    try {
-        if (!bin && paymentMethodElement.value) {
-            clearSelectsAndSetPlaceholders();
-            paymentMethodElement.value = "";
-        }
-
-        if (bin && bin !== currentBin) {
-            const { results } = await mp.getPaymentMethods({ bin });
-            const paymentMethod = results[0];
-
-            paymentMethodElement.value = paymentMethod.id;
-            updatePCIFieldsSettings(paymentMethod);
-            updateIssuer(paymentMethod, bin);
-            updateInstallments(paymentMethod, bin);
-        }
-
-        currentBin = bin;
-    } catch (e) {
-        console.error('error getting payment methods: ', e)
-    }
+const carritoItems = [];
+document.querySelectorAll('.cart-item').forEach(item => {
+    carritoItems.push({
+        sku: item.dataset.sku,
+        nombre: item.dataset.nombre,
+        cantidad: parseInt(item.dataset.cantidad),
+        precio: parseFloat(item.dataset.precio),
+        imagen: item.dataset.imagen
+    });
 });
 
-function clearSelectsAndSetPlaceholders() {
-    clearHTMLSelectChildrenFrom(issuerElement);
-    createSelectElementPlaceholder(issuerElement, issuerPlaceholder);
+const mp = new MercadoPago('TEST-b808169d-3e35-4df4-addd-38848a326728', {
+    locale: 'es'
+});
+const bricksBuilder = mp.bricks();
+const renderPaymentBrick = async (bricksBuilder) => {
+    fetch('/crear_preferencia/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({
+            transaction_amount: totalConIva,
+            items: carritoItems
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al crear la preferencia de pago');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Respuesta de crear_preferencia:', data);
+            const preferenceId = data.preference_id;
 
-    clearHTMLSelectChildrenFrom(installmentsElement);
-    createSelectElementPlaceholder(installmentsElement, installmentsPlaceholder);
-}
+            const settings = {
+                initialization: {
+                    preferenceId: preferenceId,
+                    amount: totalConIva,
+                    payer: {
+                        name: "",
+                        surname: "",
+                        email: "",
+                    },
+                },
+                customization: {
+                    visual: {
+                        style: {
+                            theme: "default",
+                        },
+                    },
+                    paymentMethods: {
+                        ticket: "all",
+                        atm: "all",
+                        onboarding_credits: "all",
+                        debitCard: "all",
+                        creditCard: "all",
+                        maxInstallments: 12
+                    },
+                },
+                callbacks: {
+                    onReady: () => {
+                    },
+                    onSubmit: ({ selectedPaymentMethod, formData }) => {
+                        return new Promise((resolve, reject) => {
+                            fetch("/process_payment/", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": csrftoken
+                                },
+                                body: JSON.stringify({
+                                    transaction_amount: totalConIva,
+                                    items: carritoItems,
+                                    formData: formData
+                                }),
+                            })
+                                .then((response) => {
+                                    if (!response.ok) {
+                                        throw new Error('Error al procesar el pago');
+                                    }
+                                    return response.json();
+                                })
+                                .then((response) => {
+                                    window.location.href = response.redirect_url;
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                    reject(error);
+                                });
+                        });
+                    },
+                    onError: (error) => {
+                        console.error(error);
+                    },
+                },
+            };
 
-function clearHTMLSelectChildrenFrom(element) {
-    const currOptions = [...element.children];
-    currOptions.forEach(child => child.remove());
-}
-
-function createSelectElementPlaceholder(element, placeholder) {
-    const optionElement = document.createElement('option');
-    optionElement.textContent = placeholder;
-    optionElement.setAttribute('selected', "");
-    optionElement.setAttribute('disabled', "");
-
-    element.appendChild(optionElement);
-}
-
-// Este paso mejora las validaciones de cardNumber y securityCode
-function updatePCIFieldsSettings(paymentMethod) {
-    const { settings } = paymentMethod;
-
-    const cardNumberSettings = settings[0].card_number;
-    cardNumberElement.update({
-        settings: cardNumberSettings
-    });
-
-    const securityCodeSettings = settings[0].security_code;
-    securityCodeElement.update({
-        settings: securityCodeSettings
-    });
-}
-
-
-async function updateIssuer(paymentMethod, bin) {
-    const { additional_info_needed, issuer } = paymentMethod;
-    let issuerOptions = [issuer];
-
-    if (additional_info_needed.includes('issuer_id')) {
-        issuerOptions = await getIssuers(paymentMethod, bin);
-    }
-
-    createSelectOptions(issuerElement, issuerOptions);
-}
-
-async function getIssuers(paymentMethod, bin) {
-    try {
-        const { id: paymentMethodId } = paymentMethod;
-        return await mp.getIssuers({ paymentMethodId, bin });
-    } catch (e) {
-        console.error('error getting issuers: ', e)
-    }
+            window.paymentBrickController = bricksBuilder.create(
+                "payment",
+                "paymentBrick_container",
+                settings
+            );
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 };
 
-
-async function updateInstallments(paymentMethod, bin) {
-    try {
-        const installments = await mp.getInstallments({
-            amount: document.getElementById('transactionAmount').value,
-            bin,
-            paymentTypeId: 'credit_card'
-        });
-        const installmentOptions = installments[0].payer_costs;
-        const installmentOptionsKeys = { label: 'recommended_message', value: 'installments' };
-        createSelectOptions(installmentsElement, installmentOptions, installmentOptionsKeys);
-    } catch (error) {
-        console.error('error getting installments: ', e)
-    }
-}
-
-
-const formElement = document.getElementById('form-checkout');
-formElement.addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const tokenElement = document.getElementById('token');
-    if (!tokenElement.value) {
-        try {
-            const token = await mp.fields.createCardToken({
-                cardholderName: document.getElementById('form-checkout__cardholderName').value,
-                identificationType: document.getElementById('form-checkout__identificationType').value,
-                identificationNumber: document.getElementById('form-checkout__identificationNumber').value,
-            });
-            tokenElement.value = token.id;
-
-            const formData = new FormData(formElement);
-            const response = await fetch(formElement.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                }
-            });
-
-            const result = await response.json();
-            if (result.status === 'success') {
-                alert('Payment approved!');
-                window.location.href = "/success";
-            } else {
-                alert('Payment failed: ' + result.message);
-            }
-        } catch (e) {
-            console.error('Error creating card token: ', e);
-        }
-    }
-});
-
-
-
+renderPaymentBrick(bricksBuilder);

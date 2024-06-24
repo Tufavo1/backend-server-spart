@@ -7,6 +7,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const priceMaxInput = document.getElementById("price-max");
     const minRangeInput = document.getElementById("min-range");
     const maxRangeInput = document.getElementById("max-range");
+    const messageList = document.getElementById('message-list');
+
+    if (messageList) {
+        setTimeout(function () {
+            messageList.style.display = 'none';
+        }, 3000);
+    }
 
     function syncRangeToInput() {
         priceMinInput.value = minRangeInput.value;

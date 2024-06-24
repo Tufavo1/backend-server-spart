@@ -9,6 +9,8 @@
 
 {% block estilos %}
     <link rel="stylesheet" href="{% static 'CSS/cart.css' %}">
+    <script src="https://sdk.mercadopago.com/js/v2">
+    </script>
 {% endblock estilos %}
 
 {% block navItems %}
@@ -57,6 +59,17 @@
     </ul>
 </div>
 {% endblock navItems %}
+
+{% block mensaje %}
+{% if messages %}
+<ul class="messages" id="message-list"> 
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock mensaje %}
+
 
 {% block content %}
 {% if user.is_authenticated %}
@@ -108,11 +121,11 @@
             <table id="lista-carrito">
                 <thead>
                     <tr>
-                        <th class="left-table text-center">SKU</th>
-                        <th class="left-table text-center">Imagen</th>
-                        <th class="left-table text-center">Nombre</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-center">Precio</th>
+                        <th>SKU</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -132,9 +145,9 @@
                         <td>
                             <form action="{% url 'eliminar_producto' item.producto.sku %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <button type="submit" class="btn-clean"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                     <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                  </svg></button>
+                                </svg></button>
                             </form>
                         </td>
                     </tr>
@@ -144,14 +157,38 @@
             <div class="text-center mt-3">
                 <form action="{% url 'vaciar_carrito' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Vaciar Carrito</button>
+                    <button type="submit" class="btn-clean">Vaciar Carrito <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                      </svg></button>
                 </form>
-            </div>              
-            <div class="container-btn-cart">
-                <div class="col-6">
-                    <a href="{% url 'checkout' total=total_carrito %}">Ir a pagar</a>
-                </div></div>
             </div>
+            <div class="container-checkout mt-3">          
+                <h2>Resumen de la Compra</h2>
+                <form method="post" action="{% url 'aplicar_codigo_descuento' %}">
+                    {% csrf_token %}
+                    <input type="text" name="codigo" placeholder="Código de descuento">
+                    <button type="submit">Aplicar</button>
+                </form>
+                <div class="subtotal">
+                    <span>Subtotal:</span>
+                    <span id="Sub-cart">{{ subtotal_carrito|formato_moneda }}</span>
+                </div>
+                <div class="iva">
+                    <span>IVA (19%):</span>
+                    <span id="iva-cart">{{ iva|formato_moneda }}</span>
+                </div>      
+                <div class="subtotal">
+                    <span>Descuento:</span>
+                    <span id="Sub-cart"> $0</span>
+                </div>   
+                <div class="total" data-total-con-iva="{{ total_con_iva }}">
+                    <span>Total:</span>
+                    <span id="Total-cart">{{ total_con_iva|formato_moneda }}</span>
+                </div>
+            </div>
+            <div id="paymentBrick_container">
+            </div>
+
         </section>
     </div>
 </main>
@@ -170,12 +207,8 @@
     </div>
 </div>
 {% endif %}
-
-
 {% endblock content %}
 
-
 {% block script %}
-    <script src="{% static "js/sitefunction.js" %}"></script>
-    <script src="{% static "js/cart.js" %}"></script>
+    <script src="{% static "js/mercadopago.js" %}"></script>
 {% endblock script %}

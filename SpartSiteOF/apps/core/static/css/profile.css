@@ -1,225 +1,79 @@
-* {
-    font-family: monospace;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: auto;
-    height: auto;
-    background-color: #000 !important;
-}
-
-.slide {
-    height: 100%;
-    width: 100%;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.slide.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.slide-content {
-    padding: 20px;
-}
-
-/*Estilos para el header slide 1*/
-.navbar {
-    color: #000;
-    width: 100%;
-    background-color: #000;
-}
-
-.navbar-brand img {
-    max-width: 120px;
-    border-radius: 30px;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    -ms-border-radius: 30px;
-    -o-border-radius: 30px;
-}
-
-.search {
-    width: 200px;
-    text-align: center;
-}
-
-.navbar-toggler {
-    color: #000;
-    margin-left: auto;
-}
-
-.form-container {
-    display: flex;
-    justify-content: center;
-}
-
-.btn-locationwithweather {
-    background-color: transparent;
-    border: none;
-    color: #f4fd1d;
-    font-size: 15px;
-    font-weight: 900;
-    padding: 10px 20px;
-    text-align: start;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition-duration: 0.4s;
-}
-
-.btn-locationwithweather img {
-    vertical-align: middle;
-}
-
-.btn {
-    margin-left: 10px;
-    color: #fff !important;
-    background-color: #000 !important;
-    padding: 10px;
-}
-
-.btn:hover {
-    background-color: #f4fd1d !important;
-    color: #000 !important;
-    border: 2px solid #fff !important;
-}
-
-svg {
-    margin-right: 2px;
-}
-
-span {
-    font-size: 15px;
-}
-
-.copyright {
-    font-size: 15px;
-    margin-bottom: 10px;
-}
-
-/* Estilos para el nav-item */
-.nav-item {
-    list-style: none;
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-
-.nav-link svg {
-    margin-right: 5px;
-}
-
-.dropdown-menu {
-    padding: 20px;
-    background-color: #000 !important;
-    text-align: center;
-    border-bottom: 3px solid #f4fd1d !important;
-    border-left: 3px solid #f4fd1d !important;
-    border-right: 3px solid #f4fd1d !important;
-}
-
-.dropdown-item {
-    color: #fff;
-}
-
-/*Estilos para el nav pero cuando se active el collapse*/
-.collapse.show {
-    background-color: #000;
-    border-bottom: 3px solid #f4fd1d;
-}
-
-.collapse.show .container-sb {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.collapse.show .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-/*Estilos para el reloj*/
-#clock-container {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    border: 4px solid #f4fd1d;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    background-color: #000;
-    padding: 10px;
-}
-
-#config-button {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-right: 4px solid #f4fd1d;
-    margin-left: -5px;
-    margin-right: 10px;
-}
-
-#config-button:hover {
-    color: #f4fd1d;
-}
-
-#clock {
-    color: #fff;
-}
-
-.dropdown-confi {
-    transform: translateY(-272px);
-    -webkit-transform: translateY(-272px);
-    -moz-transform: translateY(-272px);
-    -ms-transform: translateY(-272px);
-    -o-transform: translateY(-272px);
-    width: 240px;
-    left: -10px;
-    border-radius: 30px !important;
-    -webkit-border-radius: 30px !important;
-    -moz-border-radius: 30px !important;
-    -ms-border-radius: 30px !important;
-    -o-border-radius: 30px !important;
-    border-top: 2px solid #f4fd1d !important;
-    background-color: #000 !important;
-}
-
-.dropdown-menu-end {
-    transform-origin: top;
-}
-
-.btn-menu {
-    background-color: #000;
-    border: none;
-    color: #fff;
-    display: flex;
-    align-items: center;
-}
-
-.btn-menu:hover {
-    color: #f4fd1d;
-}
-
-.btn-menu :where(span) {
-    font-size: 15px;
+/*Estilos para el carrito*/
+.cart-counter {
+    position: absolute;
     margin-left: 5px;
-    text-align: start;
+    background-color: #fff;
+    color: #000;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 15px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/*Estilos para los datos personales*/
+.Profile_name {
+    background-color: #f5f5f5;
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.Profile_name :where(h1) {
+    color: #000;
+    margin-bottom: 15px;
+    font-size: 35px;
+}
+
+.Profile_name h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #000;
+    width: 50%;
+    margin: 0 auto;
+    color: #fff;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+/* Etiquetas (labels) */
+.Profile_name label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+/* Texto del correo electrónico */
+.Profile_name p {
+    font-size: 1rem;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 768px) {
+    .Profile_name {
+        padding: 15px;
+    }
+
+    .Profile_name h1 {
+        font-size: 1.5rem;
+    }
+
+    .Profile_name h2 {
+        font-size: 1.1rem;
+    }
+
+    .Profile_name label {
+        margin-top: 8px;
+    }
 }
 
 /*Estilos del perfil*/
@@ -314,6 +168,7 @@ span {
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
     margin-bottom: 40px;
+    margin-top: 50px;
 }
 
 .RoutesLinks span {
@@ -412,7 +267,6 @@ li.active {
     -ms-border-radius: 25px;
     -o-border-radius: 25px;
 }
-
 
 /*Estilos para la suscripcion*/
 .card {
@@ -516,7 +370,6 @@ li.active {
     font-size: 1.25rem;
     cursor: pointer;
 }
-
 
 .card-top-info__description,
 .card-aoumnt>span:first-child,
@@ -637,6 +490,75 @@ li.active {
     font-weight: 400;
     padding: 10px;
 }
+
+/*Estilos para las suscripciones*/
+/* Estilos generales para el modal */
+.modal-body {
+    padding: 20px;
+    background-color: #f8f9fa;
+    width: 100%;
+}
+
+.suscripcion {
+    display: flex;
+    flex-direction: row;
+    /* Disposición en fila */
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    /* Fondo blanco para cada suscripción */
+    border: 1px solid #dee2e6;
+    /* Borde ligero */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
+    margin-bottom: 20px;
+    /* Espacio inferior */
+}
+
+.suscripcion img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 8px;
+    /* Bordes redondeados para la imagen */
+    margin-right: 20px;
+    /* Espacio a la derecha de la imagen */
+}
+
+.suscripcion-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.suscripcion h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+
+
+.suscripcion button {
+    align-self: flex-start;
+    /* Alinear botón al inicio */
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    background-color: #007bff;
+    /* Color azul */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.suscripcion button:hover {
+    background-color: #0056b3;
+    /* Color azul oscuro al pasar el ratón */
+}
+
 
 /*Media Queries para responsividad*/
 @media screen and (max-width: 768px) {

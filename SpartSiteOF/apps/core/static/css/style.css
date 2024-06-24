@@ -1,9 +1,27 @@
+/*Estilos para el carrito*/
+.cart-counter {
+    position: absolute;
+    margin-left: 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 15px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/*Estilos para el slide*/
 .slide {
     height: 100%;
     width: 100%;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    -webkit-transition: opacity 0.5s ease, transform 0.5s ease;
+    -moz-transition: opacity 0.5s ease, transform 0.5s ease;
+    -ms-transition: opacity 0.5s ease, transform 0.5s ease;
+    -o-transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .slide.active {
@@ -307,101 +325,17 @@ a {
         height: auto;
     }
 
+    /*Estilos para el slide 3*/
+    #slide3 {
+        margin-bottom: 50px;
+    }
+
+    .card-destacados {
+        height: 420px;
+    }
+
     /*Estilos para el slide 4*/
     #slide4 {
         margin-bottom: 10px;
-    }
-
-    .form :where(h5, .copyright) {
-        color: #000;
-        font-size: 15px;
-        padding: 15px;
-    }
-
-    .form-control {
-        color: #000;
-        border: 1px solid #000;
-    }
-
-    /*Estilos para la API clock*/
-    #clock-container {
-        z-index: 9999;
-    }
-
-    .dropdown-confi {
-        width: 5px;
-        border-top: 6px solid #f4fd1d !important;
-        border-radius: 30px !important;
-        -webkit-border-radius: 30px !important;
-        -moz-border-radius: 30px !important;
-        -ms-border-radius: 30px !important;
-        -o-border-radius: 30px !important;
-    }
-
-    .btn-menu :where(span) {
-        display: none;
-    }
-
-    /*Estilos para los botones*/
-    .btn {
-        background-color: #000 !important;
-        padding: 15px;
-    }
-
-    .btn:hover {
-        border: 4px solid #000;
-        color: #000;
-    }
-
-    /*Estilos para el titulo de menu-title*/
-    .menu-title :where(span) {
-        font-size: 20px;
-    }
-
-    /*Estilos para el footer*/
-    .footer .container {
-        text-align: center;
-    }
-
-    .footer .container .row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer .container .col-md-6 {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .form :where(h5) {
-        margin-bottom: -20px;
-        font-weight: 600;
-        transform: uppercase;
-        -webkit-transform: uppercase;
-        -moz-transform: uppercase;
-        -ms-transform: uppercase;
-        -o-transform: uppercase;
-    }
-
-    .contact :where(h5) {
-        text-align: center;
-        margin-bottom: 20px;
-        font-weight: 600;
-        transform: uppercase;
-        -webkit-transform: uppercase;
-        -moz-transform: uppercase;
-        -ms-transform: uppercase;
-        -o-transform: uppercase;
-    }
-
-    .contact :where(p) {
-        display: flex;
-        margin: 0 auto;
-        margin-bottom: 5px;
-    }
-
-    .contact :where(a) {
-        padding: 5px;
     }
 }

@@ -58,17 +58,28 @@
     {% endif %}
     </ul>
 </div>
-<a href="{% url 'carrito' %}">
-    <button class="btn" id="user-cart">
+<a id="cartLink" href="{% url 'carrito' %}">
+    <button class="btn" id="user-cart" data-count="0">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-basket-fill"
             viewBox="0 0 16 16">
             <path
             d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0z" />
-        </svg><span>carrito</span>
+        </svg><span class="badge cart-counter">{{ carrito_count }}</span>
+
     </button>
 </a>
 
 {% endblock navItems %}
+
+{% block mensaje %}
+{% if messages %}
+<ul class="messages" id="message-list"> 
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock mensaje %}
 
 {% block content %}
     <section class="container-motion">
@@ -229,24 +240,23 @@
             <div class="container-card productos" id="lista">
                 {% for p in prod %}
                 <div class="card">
-                    <div class="abrir-resenas" data-url="{% url "ver_resenas" p.sku %}" id="{{p.sku}}" data-categoria="{{p.categoria.nombre}}" data-platillo="{{p.platillo.nombre}}" data-precio="{{p.precio}}">
+                    <a class="abrir-resenas" href="{% url 'ver_resenas' p.sku %}" id="{{p.sku}}" data-categoria="{{p.categoria.nombre}}" data-platillo="{{p.platillo.nombre}}" data-precio="{{p.precio|formato_moneda}}">
                         <img src="{{p.imagen.url}}" class="card-img-top" alt="{{p.imagen.url}}">
                         <div class="card-body">
                             <h1 class="card-title">{{p.nombre}}</h1>
-                            <h5 class="card-precio" data-precio="{{ p.precio }}">
+                            <h5 class="card-precio" data-precio="{{ p.precio|formato_moneda }}">
                                 {{ p.precio|formato_moneda }} CLP
                             </h5>
+                            <div class="stock">Disponible: {{ p.stock }}</div>
                         </div>
-                    </div>
-                    <form id="form-agregar-carrito" method="post" action="{% url 'agregar_al_carrito' %}">
+                    </a>
+                    <form class="add-to-cart-form" id="form-agregar-carrito" method="post" action="{% url 'agregar_al_carrito' %}">
                         {% csrf_token %}
                         <input type="hidden" name="producto_sku" value="{{ p.sku }}">
-                        <button id="btn-add-to-cart" class="card-button" type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0"/>
-                            </svg>
-                        </button>                    
-                    </form>   
+                        <input type="hidden" name="cantidad" value="1">
+                        <button type="submit" class="card-button">Agregar al Carrito</button>
+                    </form>
+                    <div id="message" style="display:none;"></div>
                 </div>
                 {% endfor %}
             </div>
@@ -270,7 +280,5 @@
 {% endblock content %}
 
 {% block script %}
-    <script src="{% static "js/sitefunction.js" %}"></script>
-    <script src="{% static "js/script.js" %}"></script>
-    <script src="{% static "js/cart.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
 {% endblock script %}

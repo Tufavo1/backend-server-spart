@@ -1,6 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
     const slides = document.querySelectorAll('.slide');
     const logoutButton = document.getElementById("Perfil");
+    const detallesToggle = document.querySelector('.ver-detalles');
+    const ingredientesToggle = document.querySelector('.ver-ingredientes');
+    const detallesSection = document.querySelector('.detalles');
+    const ingredientesSection = document.querySelector('.ingredientes');
+
+    // Verificar si los elementos existen antes de agregar eventos
+    if (detallesToggle && detallesSection) {
+        detallesToggle.addEventListener('click', function () {
+            detallesSection.classList.toggle('mostrar');
+        });
+    }
+
+    if (ingredientesToggle && ingredientesSection) {
+        ingredientesToggle.addEventListener('click', function () {
+            ingredientesSection.classList.toggle('mostrar');
+        });
+    }
 
     var configDropdown = document.getElementById("config-dropdown");
     var configButton = document.getElementById("config-button");
@@ -84,6 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(updateClock, 3000);
 
     updateClock();
+
+    function showAlert(message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('Alerta-custom');
+        alertDiv.textContent = message;
+        document.body.appendChild(alertDiv);
+    }
 
     function getLocationAndUpdateButton() {
         if (navigator.geolocation) {
