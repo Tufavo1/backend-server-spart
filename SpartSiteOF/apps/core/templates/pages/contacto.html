@@ -64,6 +64,16 @@
 
 {% endblock navItems %}
 
+{% block mensaje %}
+{% if messages %}
+<ul class="messages" id="message-list"> 
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock mensaje %}
+
 {% block content %}
     <div class="slide active" id="slide1">
         <div class="slide-content">

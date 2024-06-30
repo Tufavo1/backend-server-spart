@@ -121,13 +121,13 @@
 
 .cart-form,
 .cart-content {
-    width: 50%;
+    width: 30%;
     margin: 0 auto;
     margin-top: 0;
 }
 
 .cart-content {
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #fff;

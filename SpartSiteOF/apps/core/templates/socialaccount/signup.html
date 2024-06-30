@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
 {% endblock  %}
 
+{% block mensaje %}
+{% if messages %}
+<ul class="messages" id="message-list"> 
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock mensaje %}
+
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}

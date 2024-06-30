@@ -13,9 +13,3 @@ class CustomSignupForm(SignupForm):
         user.last_name = self.cleaned_data["last_name"]
         user.save()
         return user
-
-
-class SuscripcionForm(forms.ModelForm):
-    class Meta:
-        model = Suscripcion
-        fields = ["sku", "nombre", "descripcion", "imagen", "periodo"]
